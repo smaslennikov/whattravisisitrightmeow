@@ -8,13 +8,15 @@ Who needs ntp when you have this?
 
 Fork me, eat me, put me in a tree
 
-Run `./bin/time.sh` forever
+Turn on Travis
+
+It'll run `./bin/time.sh` forever
 
 Watch your own personalized time!
 
 ## Do I use this?
 
-Hell yes I do, [in prod](https://github.com/naftulikay/ansible-role-time/pull/7). Someone tell him to merge it already!
+Not yet, but you can.
 
 ## Contributing
 
@@ -27,6 +29,8 @@ I woke up one morning after seeing the traeish of Bojack Horseman and thought:
 ```thoughts
 "what's the worst possible way I can show time on the internet?"
 ```
+
+That's how [this](http://smaslennikov.com/whattimeisitrightmeow/) came about. But I don't want to have to run it on my own VPS, that's what free Travis is for.
 
 Behold.
 
