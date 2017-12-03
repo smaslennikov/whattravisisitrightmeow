@@ -1,4 +1,4 @@
-# What time is it right meow?
+# What time is it right meow? [![Build Status](https://travis-ci.org/smaslennikov/whattravisisitrightmeow.svg?branch=master)](https://travis-ci.org/smaslennikov/whattravisisitrightmeow)
 
 You know you want to find out.
 
