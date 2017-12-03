@@ -7,21 +7,21 @@ git config user.email travistime@allweretaken.xyz
 git config commit.gpgsign false
 
 nowdate=$(date +"%H %M %Z")
-nowhour=$(echo $nowdate | cut -d' ' -f 1)
-nowminu=$(echo $nowdate | cut -d' ' -f 2)
+nowhour=$(echo $nowdate | cut -d' ' -f 1 | sed -e 's/^0//g')
+nowminu=$(echo $nowdate | cut -d' ' -f 2 | sed -e 's/^0//g')
 
 olddate=$(cat time.txt)
-oldhour=$(echo $olddate | cut -d' ' -f 1)
-oldminu=$(echo $olddate | cut -d' ' -f 2)
+oldhour=$(echo $olddate | cut -d' ' -f 1 | sed -e 's/^0//g')
+oldminu=$(echo $olddate | cut -d' ' -f 2 | sed -e 's/^0//g')
 
-if [ "$nowhour" -gt "$oldhour" -o ( "$nowminu" -gt "$oldminu" -a "$nowhour" -ge "$oldhour" ) ]; then
+if [[ "$nowhour" -gt "$oldhour" || ( "$nowminu" -gt "$oldminu" && "$nowhour" -ge "$oldhour" ) ]]; then
     updatetime
     push
-elif [ "$nowminu" -eq "$oldminu" -a "$nowhour" -eq "$oldhour" ) ]; then
+elif [ "$nowminu" -eq "$oldminu" -a "$nowhour" -eq "$oldhour" ]; then
     sleep $((60 - $(date +%-S)))
     updatetime
     push
-elif [ "$nowhour" -lt "$oldhour" -o ( "$nowminu" -lt "$oldminu" -a "$nowhour" -ge "$oldhour" ) ]; then
+elif [[ "$nowhour" -lt "$oldhour" || ( "$nowminu" -lt "$oldminu" && "$nowhour" -ge "$oldhour" ) ]]; then
     echo "Time travel detected, explode quickly"
     rm .travis.yml
     git add .travis.yml
