@@ -2,31 +2,42 @@
 
 set -ex
 
-git config user.name time
-git config user.email time@allweretaken.xyz
+git config user.name travistime
+git config user.email travistime@allweretaken.xyz
 git config commit.gpgsign false
 
-if [ -e lock ]; then
-    rm lock
+nowdate=$(date +"%H %M %Z")
+olddate=$(cat time.txt)
+
+if [ "$nowdate" -gt "$olddate" ]; then
+    updatetime
+    push
+elif [ "$nowdate" -eq "$olddate" ]; then
+    sleep $((60 - $(date +%-S)))
+    updatetime
+    push
+elif [ "$nowdate" -lt "$olddate" ]; then
+    echo "Time travel detected, explode quickly"
+    rm .travis.yml
+    git add .travis.yml
+    git commit -m "Good bye cruel world"
+    push
 fi
 
-while true; do
-    date=$(date +"%H %M %Z")
-    commits=$(git shortlog | grep -E '^[^ ]' | grep time | sed -e 's/^.*(//g' -e 's/).*//g')
-    sed -i'traaash' -e 's&<p can i put a marker here?.*$&<p can i put a marker here?>'"$date"'</p>&' index.html
-    sed -i'traaash' -e 's&<p can i put another marker here?.*$&<p can i put another marker here?>'"$commits"' minutes committed</p>&' index.html
-    echo $date > time.txt
+updatetime() {
+    echo $nowdate > time.txt
+    sed -i'traeish' -e 's&<p can i put a marker here?.*$&<p can i put a marker here?>'"$nowdate"'</p>&' index.html
+
+    commits=$(git shortlog | grep -E '^[^ ]' | grep travistime | sed -e 's/^.*(//g' -e 's/).*//g')
+    sed -i'traeish' -e 's&<p can i put another marker here?.*$&<p can i put another marker here?>'"$commits"' minutes committed</p>&' index.html
+
     git add index.html time.txt
     git commit -m "Can't you see I'm updating the time?"
-    if ! [ -e lock ]; then
-        ( touch lock; \
-	cmdpid=$BASHPID; \
-	(sleep 30; kill $cmdpid && rm lock || rm lock) & \
-	    (
-            git pull --rebase origin master; \
-            git push origin master; \
-            );
-	)&
-    fi
-    sleep $((60 - $(date +%-S)))
-done
+}
+
+push() {
+    cmdpid=$BASHPID
+    (sleep 30; kill $cmdpid) &
+    git pull --rebase origin master
+    git push origin master
+}
