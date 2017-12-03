@@ -2,9 +2,8 @@
 
 set -ex
 
-git config user.name travistime
-git config user.email travistime@allweretaken.xyz
-git config commit.gpgsign false
+git config --global user.email "travis@travis-ci.org"
+git config --global user.name "Travis CI"
 
 updatetime() {
     echo $nowdate > time.txt
@@ -21,7 +20,8 @@ push() {
     cmdpid=$BASHPID
     (sleep 30; kill $cmdpid) &
     git pull --rebase origin master
-    git push origin master
+    git remote add muster https://${GH_TOKEN}@github.com/smaslennikov/whattravisisitrightmeow.git
+    git push muster master
 }
 
 nowdate=$(date +"%H %M %Z")
