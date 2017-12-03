@@ -6,6 +6,24 @@ git config user.name travistime
 git config user.email travistime@allweretaken.xyz
 git config commit.gpgsign false
 
+updatetime() {
+    echo $nowdate > time.txt
+    sed -i'traeish' -e 's&<p can i put a marker here?.*$&<p can i put a marker here?>'"$nowdate"'</p>&' index.html
+
+    commits=$(git shortlog | grep -E '^[^ ]' | grep travistime | sed -e 's/^.*(//g' -e 's/).*//g')
+    sed -i'traeish' -e 's&<p can i put another marker here?.*$&<p can i put another marker here?>'"$commits"' minutes committed</p>&' index.html
+
+    git add index.html time.txt
+    git commit -m "Can't you see I'm updating the time?"
+}
+
+push() {
+    cmdpid=$BASHPID
+    (sleep 30; kill $cmdpid) &
+    git pull --rebase origin master
+    git push origin master
+}
+
 nowdate=$(date +"%H %M %Z")
 nowhour=$(echo $nowdate | cut -d' ' -f 1 | sed -e 's/^0//g')
 nowminu=$(echo $nowdate | cut -d' ' -f 2 | sed -e 's/^0//g')
@@ -28,21 +46,3 @@ elif [[ "$nowhour" -lt "$oldhour" || ( "$nowminu" -lt "$oldminu" && "$nowhour" -
     git commit -m "Good bye cruel world"
     push
 fi
-
-updatetime() {
-    echo $nowdate > time.txt
-    sed -i'traeish' -e 's&<p can i put a marker here?.*$&<p can i put a marker here?>'"$nowdate"'</p>&' index.html
-
-    commits=$(git shortlog | grep -E '^[^ ]' | grep travistime | sed -e 's/^.*(//g' -e 's/).*//g')
-    sed -i'traeish' -e 's&<p can i put another marker here?.*$&<p can i put another marker here?>'"$commits"' minutes committed</p>&' index.html
-
-    git add index.html time.txt
-    git commit -m "Can't you see I'm updating the time?"
-}
-
-push() {
-    cmdpid=$BASHPID
-    (sleep 30; kill $cmdpid) &
-    git pull --rebase origin master
-    git push origin master
-}
