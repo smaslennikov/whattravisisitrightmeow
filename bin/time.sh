@@ -21,6 +21,7 @@ push() {
     (sleep 30; kill $cmdpid) &
     git pull --rebase origin master
     git remote add muster https://${GH_TOKEN}@github.com/smaslennikov/whattravisisitrightmeow.git
+    git log
     git push muster master
 }
 
