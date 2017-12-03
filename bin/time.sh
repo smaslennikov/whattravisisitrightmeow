@@ -7,16 +7,21 @@ git config user.email travistime@allweretaken.xyz
 git config commit.gpgsign false
 
 nowdate=$(date +"%H %M %Z")
-olddate=$(cat time.txt)
+nowhour=$(echo $nowdate | cut -d' ' -f 1)
+nowminu=$(echo $nowdate | cut -d' ' -f 2)
 
-if [ "$nowdate" -gt "$olddate" ]; then
+olddate=$(cat time.txt)
+oldhour=$(echo $olddate | cut -d' ' -f 1)
+oldminu=$(echo $olddate | cut -d' ' -f 2)
+
+if [ "$nowhour" -gt "$oldhour" -o ( "$nowminu" -gt "$oldminu" -a "$nowhour" -ge "$oldhour" ) ]; then
     updatetime
     push
-elif [ "$nowdate" -eq "$olddate" ]; then
+elif [ "$nowminu" -eq "$oldminu" -a "$nowhour" -eq "$oldhour" ) ]; then
     sleep $((60 - $(date +%-S)))
     updatetime
     push
-elif [ "$nowdate" -lt "$olddate" ]; then
+elif [ "$nowhour" -lt "$oldhour" -o ( "$nowminu" -lt "$oldminu" -a "$nowhour" -ge "$oldhour" ) ]; then
     echo "Time travel detected, explode quickly"
     rm .travis.yml
     git add .travis.yml
