@@ -39,7 +39,7 @@ if [[ "$nowhour" -gt "$oldhour" || ( "$nowminu" -gt "$oldminu" && "$nowhour" -ge
     updatetime
     push
 elif [ "$nowminu" -eq "$oldminu" -a "$nowhour" -eq "$oldhour" ]; then
-    sleep $((60 - $(date +%-S)))
+    sleep $((61 - $(date +%-S)))
     updatetime
     push
 elif [[ "$nowhour" -lt "$oldhour" || ( "$nowminu" -lt "$oldminu" && "$nowhour" -ge "$oldhour" ) ]]; then
