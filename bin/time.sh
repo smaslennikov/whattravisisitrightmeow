@@ -13,7 +13,7 @@ updatetime() {
     echo $nowdate > time.txt
     sed -i'traeish' -e 's&<p can i put a marker here?.*$&<p can i put a marker here?>'"$nowdate"'</p>&' index.html
 
-    commits=$(git shortlog | grep -E '^[^ ]' | grep travis | sed -e 's/^.*(//g' -e 's/).*//g')
+    commits=$(git shortlog | grep -E '^[^ ]' | grep Travis | sed -e 's/^.*(//g' -e 's/).*//g')
     sed -i'traeish' -e 's&<p can i put another marker here?.*$&<p can i put another marker here?>'"$commits"' minutes committed</p>&' index.html
 
     git add index.html time.txt
