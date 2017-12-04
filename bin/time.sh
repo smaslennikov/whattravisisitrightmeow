@@ -4,6 +4,10 @@ set -ex
 
 git config --global user.email "travis@travis-ci.org"
 git config --global user.name "Travis CI"
+git remote rm origin
+git remote add origin https://${GH_TOKEN}@github.com/smaslennikov/whattravisisitrightmeow.git
+git checkout -b muster
+git checkout -B master muster
 
 updatetime() {
     echo $nowdate > time.txt
@@ -19,10 +23,8 @@ updatetime() {
 push() {
     cmdpid=$BASHPID
     (sleep 30; kill $cmdpid) &
-    git pull --rebase origin master
-    git remote add muster https://${GH_TOKEN}@github.com/smaslennikov/whattravisisitrightmeow.git
-    git log
-    git push muster master
+    git status
+    git push origin master
 }
 
 nowdate=$(date +"%H %M %Z")
