@@ -35,10 +35,10 @@ olddate=$(cat time.txt)
 oldhour=$(echo $olddate | cut -d' ' -f 1 | sed -e 's/^0//g')
 oldminu=$(echo $olddate | cut -d' ' -f 2 | sed -e 's/^0//g')
 
-if [[ "$nowhour" -gt "$oldhour" || ( "$nowminu" -gt "$oldminu" && "$nowhour" -ge "$oldhour" ) ]]; then
+if [ "$nowhour" -ne "$oldhour" -o "$nowminu" -ne "$oldminu" ]; then
     updatetime
     push
-elif [ "$nowminu" -eq "$oldminu" -a "$nowhour" -eq "$oldhour" ]; then
+else
     sleep $((60 - $(date +%-S)))
 
     nowdate=$(date +"%H %M %Z")
@@ -46,11 +46,5 @@ elif [ "$nowminu" -eq "$oldminu" -a "$nowhour" -eq "$oldhour" ]; then
     nowminu=$(echo $nowdate | cut -d' ' -f 2 | sed -e 's/^0//g')
 
     updatetime
-    push
-elif [[ "$nowhour" -lt "$oldhour" || ( "$nowminu" -lt "$oldminu" && "$nowhour" -ge "$oldhour" ) ]]; then
-    echo "Time travel detected, explode quickly"
-    rm .travis.yml
-    git add .travis.yml
-    git commit -m "Good bye cruel world"
     push
 fi
