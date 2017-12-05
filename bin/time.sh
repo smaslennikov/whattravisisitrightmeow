@@ -2,12 +2,13 @@
 
 set -ex
 
-git config --global user.email "travis@travis-ci.org"
-git config --global user.name "Travis CI"
+git config user.email "travis@travis-ci.org"
+git config user.name "Travis CI"
 git remote rm origin
 git remote add origin https://${GH_TOKEN}@github.com/smaslennikov/whattravisisitrightmeow.git
 git checkout -b muster
 git checkout -B master muster
+git fetch --unshallow
 
 updatetime() {
     echo $nowdate > time.txt
