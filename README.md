@@ -37,3 +37,7 @@ Behold.
 ## License
 
 MIT [license](LICENSE) it is.
+
+## Disclaimer
+
+My employer pays happily for Travis CI and this is a **PoC only**. Please don't abuse Travis CI like this! He nice.
